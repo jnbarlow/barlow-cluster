@@ -1,0 +1,25 @@
+{
+  "name": "barlow-cluster",
+  "version": "0.0.1",
+  "description": "Node based compute cluster.",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jnbarlow/barlow-cluster.git"
+  },
+  "keywords": [
+    "cluster",
+    "compute",
+    "thread",
+    "worker"
+  ],
+  "author": "John Barlow",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jnbarlow/barlow-cluster/issues"
+  },
+  "homepage": "https://github.com/jnbarlow/barlow-cluster#readme"
+}
