@@ -10,7 +10,7 @@ class Worker {
             //fill out our options here.
             options = {
                 ...{
-                    port: 2580
+                    port: 22580
                 },
                 ...(options || {})
             };
@@ -30,11 +30,13 @@ class Worker {
         
             //publish that we're up
             bonjour.publish({
-                name: 'Barlow Cluster Worker',
-                type: 'barlow-compute-worker',
+                name: `BCW-${this.id}`,
+                type: 'barlow-cluster-worker',
                 port: options.port,
-                capabilities: sysinfo,
-                id: this.id
+                txt: {
+                    capabilities: sysinfo,
+                    id: this.id
+                }
             });
             log.info('Broadcasting via Bonjour.');
         })();
