@@ -1,6 +1,7 @@
 const bonjour = require('bonjour')();
 const log = require('loglevel-colors')('bc:Worker');
 const SystemInfo = require('./SystemInfo')
+const Operator = require('./Operator');
 const {v4} = require('uuid');
 
 class Worker {
@@ -15,7 +16,9 @@ class Worker {
                 ...(options || {})
             };
 
-            
+            //initialize the operator for socket stuff
+            this.operator = new Operator(options);
+
             //get capabilities
             const si = new SystemInfo();
             log.info('Gathering System Capabilities...');
@@ -25,8 +28,6 @@ class Worker {
             //generate node id
             this.id = v4();
             log.info(`Node ID: ${this.id}`);
-        
-            //start up express with socket.io
         
             //publish that we're up
             bonjour.publish({
