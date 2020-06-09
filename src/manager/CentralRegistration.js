@@ -21,7 +21,7 @@ class CentralRegistration {
             this.workers[service.referer.address] = new RegisteredWorker(service);
             log.info(`...Worker Registered: ${service.referer.address}/${service.txt.id}`);
         } else {
-            log.info(`...Worker already registered: ${service.referer.address}/${service.txt.id}`);
+            log.info(`...Worker already registered: ${service.referer.address}/${this.workers[service.referer.address].id}`);
         }
     }
 

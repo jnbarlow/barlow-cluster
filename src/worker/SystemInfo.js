@@ -6,9 +6,56 @@ class SystemInfo {
      * get the capabilities of the server.
      */
     async getCapabilities(){
-        
-        const cpu = await si.cpu();
+        return {
+            cpu: await this.getCPU(),
+            memory: await this.getMemory(),
+            load: await this.getLoad(),
+            network: await this.getNetwork()
+        }
+    }
+
+    /**
+     * Gets the memory stats for the host system.
+     */
+    async getMemory(){
         const mem = await si.mem();
+        return {
+            total: mem.total,
+            used: mem.used,
+            free: mem.free
+        };
+    }
+
+    /**
+     * gets the CPU stats for the host system
+     */
+    async getCPU(){
+        const cpu = await si.cpu();
+        return {
+            type: `${cpu.manufacturer} ${cpu.brand}`,
+            cores: cpu.cores,
+            physicalCores: cpu.physicalCores,
+            speed: cpu.speedmax
+        };
+    }
+
+    /**
+     * gets the current CPU load for the host system
+     */
+    async getLoad(){
+        const cpuLoad = await si.currentLoad();
+        return {
+            currentLoad: cpuLoad.currentload,
+            cpus: cpuLoad.cpus.map(cpu =>{
+                return cpu.load
+            })
+        }
+    }
+
+    /**
+     * gets the network configuration for the host system.
+     */
+    async getNetwork() {
         const network = (await (await si.networkInterfaces()).filter(item =>{
             if(
                 !item.virtual 
@@ -21,21 +68,18 @@ class SystemInfo {
         }));
 
         return {
-            cpu: {
-                type: `${cpu.manufacturer} ${cpu.brand}`,
-                cores: cpu.cores,
-                physicalCores: cpu.physicalCores,
-                speed: cpu.speedmax
-            },
-            memory: {
-                total: mem.total,
-                used: mem.used,
-                free: mem.free
-            },
-            network: {
-                ip4: network[0].ip4,
-                ip6: network[0].ip6
-            }
+            ip4: network[0].ip4,
+            ip6: network[0].ip6
+        }
+    }
+
+    /**
+     * Gets the current vitals of the machine... used for the heartbeat.
+     */
+    async getVitals() {
+        return {
+            load: await this.getLoad(),
+            memory: await this.getMemory()
         }
     }
 
@@ -48,7 +92,8 @@ class SystemInfo {
         return `
 
     CPU: ${sysinfo.cpu.type} ${sysinfo.cpu.speed}Ghz, ${sysinfo.cpu.physicalCores} cores / ${sysinfo.cpu.cores} threads
-    Memory: ${memTotal.toPrecision(4)}GB total, ${memFree.toPrecision(4)}GB total
+    Load: ${sysinfo.load.currentLoad.toPrecision(4)}%
+    Memory: ${memTotal.toPrecision(4)}GB total, ${memFree.toPrecision(4)}GB free
     Network: 
         ipv4: ${sysinfo.network.ip4}
         ipv6: ${sysinfo.network.ip6}
