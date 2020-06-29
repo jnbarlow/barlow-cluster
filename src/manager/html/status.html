@@ -1,0 +1,39 @@
+<html>
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel='stylesheet' type='text/css' href='/vendor/bootstrap/dist/css/bootstrap.min.css'>
+
+        <!-- js -->
+        <script src='/vendor/jquery/jquery.min.js'></script>
+
+        <!-- socket stuff -->
+        <script src='/vendor/socket.io-client/dist/socket.io.js'></script>
+        <script>
+            const socket = io();
+            socket.on('connect', ()=>{
+                console.log('connected');
+            });
+        </script>
+
+        <title>Barlow Cluster Status</title>
+    </head>
+    <body>
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+              <h1 class="display-4">Barlow Cluster</h1>
+              <p class="lead">Status page for your cluster, including resources for your connected clients.</p>
+            </div>
+          </div>
+        <div class='container'>
+            <div class='row stats'>
+                <div class='col-md-4'>
+                    foo
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
