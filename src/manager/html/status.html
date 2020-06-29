@@ -7,8 +7,19 @@
         <!-- Bootstrap CSS -->
         <link rel='stylesheet' type='text/css' href='/vendor/bootstrap/dist/css/bootstrap.min.css'>
 
+        <style>
+            .stats .card {
+                margin-bottom:20px;
+                transition: background-color 0.5s ease .1s;
+            }
+            .pulse {
+                background-color:khaki;
+                transition: background-color 0.5s ease .1s;
+            }
+        </style>
+
         <!-- js -->
-        <script src='/vendor/jquery/jquery.min.js'></script>
+        <script src='/vendor/jquery/dist/jquery.min.js'></script>
 
         <!-- socket stuff -->
         <script src='/vendor/socket.io-client/dist/socket.io.js'></script>
@@ -17,6 +28,44 @@
             socket.on('connect', ()=>{
                 console.log('connected');
             });
+
+            /**
+             * generates the card for each worker
+             */
+            function generateCard(worker){
+                const card = $(`#${worker.id}`);
+                const stats = $('.stats');
+
+                const innerHtml = `
+                    <div class='card'>
+                        <div class='card-body'>
+                            <h5>Node: ${worker.name}</h5>
+                            <hr>
+                            <span>CPU Load: ${worker.cpu.load}</span><br>
+                            <span>Memory usage: ${worker.memory.usage}</span>
+                        </div>
+                    </div>
+                `;
+
+                const html = `
+                <div class='col-md-4' id=${worker.id}>
+                    ${innerHtml}
+                </div>
+                `;
+
+                if(!card.length){
+                    stats.append(html);
+                } else {
+                    card.html(innerHtml);
+                }
+                setTimeout(()=>{pulse(worker.id)}, 100);
+            }
+
+            function pulse(id) {
+                const card = $(`#${id} .card`);
+                card.toggleClass('pulse');
+                setTimeout(()=>{card.toggleClass('pulse');}, 750);
+            }
         </script>
 
         <title>Barlow Cluster Status</title>
@@ -28,11 +77,9 @@
               <p class="lead">Status page for your cluster, including resources for your connected clients.</p>
             </div>
           </div>
-        <div class='container'>
+        <div class='container-fluid'>
             <div class='row stats'>
-                <div class='col-md-4'>
-                    foo
-                </div>
+
             </div>
         </div>
     </body>
