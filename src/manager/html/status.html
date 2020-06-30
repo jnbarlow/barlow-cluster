@@ -16,6 +16,12 @@
                 background-color:khaki;
                 transition: background-color 0.5s ease .1s;
             }
+            .cpu {
+                margin-top:4px;
+            }
+            .section {
+                margin-bottom:10px;
+            }
         </style>
 
         <!-- js -->
@@ -40,20 +46,95 @@
                 const usedMem = memUnit == 'GB'? worker.memory.used/1073741824 : worker.memory.used/1048576;
                 const freeMem = memUnit == 'GB'? worker.memory.free/1073741824 : worker.memory.free/1048576;
 
+                //build individual cpu graphs
+                let cpus = '';
+                worker.load.cpus.forEach((cpu, index)=>{
+                    if(index % 2 == 0) {
+                        cpus = cpus + `
+                        <div class='row'>
+                            <div class='col-md-3 offset-md-1'>
+                                CPU ${index} - ${index + 1}
+                            </div>
+                            <div class='col-md-8'>
+                                <div class='row'>
+                                    <div class='col-md-6'>
+                                        <div class='row'>
+                                            <div class='col-md-4'>
+                                                ${cpu.toFixed(0)}%
+                                            </div>
+                                            <div class='col-md-8'>
+                                                <div class="progress cpu">
+                                                    <div class="progress-bar" style='width: ${cpu.toFixed(0)}%;'></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                        `
+                    } else {
+                        cpus = cpus + `
+                                    <div class='col-md-6'>
+                                        <div class='row'>
+                                            <div class='col-md-4'>
+                                                ${cpu.toFixed(0)}%
+                                            </div>
+                                            <div class='col-md-8'>
+                                                <div class="progress cpu">
+                                                    <div class="progress-bar" style='width: ${cpu.toFixed(0)}%;'></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        `
+                    }
+                });
+
+
                 const innerHtml = `
                     <div class='card'>
                         <div class='card-body'>
-                            <h5>Node: ${worker.id}</h5>
+                            <div class='row section'>
+                                <div class='col-md-12'>
+                                    <h5>Node: ${worker.id}</h5>
+                                </div>
+                            </div>
                             <hr>
-                            <div>Address: ${worker.address}</div><br>
-                            <div>CPU Load: ${worker.load.currentLoad.toFixed(2)}%</div><br>
-                            <div>
-                                Memory:
-                                <ul>
-                                    <li>Total: ${totalMem.toFixed(2)} ${memUnit}</li>
-                                    <li>Used: ${usedMem.toFixed(2)} ${memUnit}</li>
-                                    <li>Free: ${freeMem.toFixed(2)} ${memUnit}</li>
-                                </ul>
+                            <div class='row section'>
+                                <div class='col-md-12'>
+                                    Address: ${worker.address}
+                                </div>
+                            </div>
+                            <div class='section'>
+                                <div class='row'>
+                                    <div class='col-md-4'>
+                                        CPU Load
+                                    </div>
+                                    <div class='col-md-8'>
+                                        <div class='row'>
+                                            <div class='col-md-2'>
+                                                ${worker.load.currentLoad.toFixed(0)}%
+                                            </div>
+                                            <div class='col-md-10'>
+                                                <div class="progress cpu">
+                                                    <div class="progress-bar" style='width: ${worker.load.currentLoad.toFixed(0)}%;'></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                ${cpus}
+                            </div>
+                            <div class='row section'>
+                                <div class='col-md-12'>
+                                    Memory:
+                                    <ul>
+                                        <li>Total: ${totalMem.toFixed(2)} ${memUnit}</li>
+                                        <li>Used: ${usedMem.toFixed(2)} ${memUnit}</li>
+                                        <li>Free: ${freeMem.toFixed(2)} ${memUnit}</li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
