@@ -26,6 +26,9 @@ class Manager {
         });
 
         this.io = this.webServer(options);
+        this.cr.on('beat', (data)=>{
+            this.handleBeat(data);
+        })
     }
 
     /**
@@ -48,6 +51,10 @@ class Manager {
 
         server.listen(options.port);
         return io;
+    }
+
+    handleBeat(data){
+        this.io.emit('beat', data);
     }
 }
 

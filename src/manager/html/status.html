@@ -25,8 +25,8 @@
         <script src='/vendor/socket.io-client/dist/socket.io.js'></script>
         <script>
             const socket = io();
-            socket.on('connect', ()=>{
-                console.log('connected');
+            socket.on('beat', (data)=>{
+                generateCard(data);
             });
 
             /**
@@ -35,14 +35,26 @@
             function generateCard(worker){
                 const card = $(`#${worker.id}`);
                 const stats = $('.stats');
+                const memUnit = (worker.memory.total > 1073741824)? 'GB' : 'MB';
+                const totalMem = memUnit == 'GB'? worker.memory.total/1073741824 : worker.memory.total/1048576;
+                const usedMem = memUnit == 'GB'? worker.memory.used/1073741824 : worker.memory.used/1048576;
+                const freeMem = memUnit == 'GB'? worker.memory.free/1073741824 : worker.memory.free/1048576;
 
                 const innerHtml = `
                     <div class='card'>
                         <div class='card-body'>
-                            <h5>Node: ${worker.name}</h5>
+                            <h5>Node: ${worker.id}</h5>
                             <hr>
-                            <span>CPU Load: ${worker.cpu.load}</span><br>
-                            <span>Memory usage: ${worker.memory.usage}</span>
+                            <div>Address: ${worker.address}</div><br>
+                            <div>CPU Load: ${worker.load.currentLoad.toFixed(2)}%</div><br>
+                            <div>
+                                Memory:
+                                <ul>
+                                    <li>Total: ${totalMem.toFixed(2)} ${memUnit}</li>
+                                    <li>Used: ${usedMem.toFixed(2)} ${memUnit}</li>
+                                    <li>Free: ${freeMem.toFixed(2)} ${memUnit}</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 `;
