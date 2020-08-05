@@ -47,6 +47,17 @@ class CentralRegistration extends EventEmitter{
     handleBeat(data){
         this.emit('beat', data);
     }
+
+    sendJob(data){
+        log.info('Processing Job')
+        //Todo: do some kind of internal queue
+        try {
+            this.workers[Object.keys(this.workers)[0]].sendJob(data);
+        } catch (e) {
+            log.error('Error processing Job', e);
+        }
+
+    }
 }
 
 module.exports = CentralRegistration;

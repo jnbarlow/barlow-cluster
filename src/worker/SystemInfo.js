@@ -1,6 +1,9 @@
 const log = require('loglevel-colors')('bc:SystemInfo');
 const si = require('systeminformation');
 
+/**
+ * Class to get different bits of system info for a worker.  Cpu type/load, network info, memory usage..
+ */
 class SystemInfo {
     /**
      * get the capabilities of the server.
@@ -58,7 +61,7 @@ class SystemInfo {
     async getNetwork() {
         const network = (await (await si.networkInterfaces()).filter(item =>{
             if(
-                !item.virtual 
+                !item.virtual
                 && !item.internal
                 && item.operstate == 'up'
                 && (item.ip4 != '' || item.ip6 != '')
@@ -94,7 +97,7 @@ class SystemInfo {
     CPU: ${sysinfo.cpu.type} ${sysinfo.cpu.speed}Ghz, ${sysinfo.cpu.physicalCores} cores / ${sysinfo.cpu.cores} threads
     Load: ${sysinfo.load.currentLoad.toPrecision(4)}%
     Memory: ${memTotal.toPrecision(4)}GB total, ${memFree.toPrecision(4)}GB free
-    Network: 
+    Network:
         ipv4: ${sysinfo.network.ip4}
         ipv6: ${sysinfo.network.ip6}
             `;

@@ -2,8 +2,10 @@ const bonjour = require('bonjour')();
 const log = require('loglevel-colors')('bc:Manager');
 const CentralRegistration = require('./CentralRegistration');
 const express = require('express');
-class Manager {
+const EventEmitter = require('events').EventEmitter;
+class Manager extends EventEmitter{
     constructor(options){
+        super();
          //fill out our options here.
          options = {
             ...{
@@ -18,7 +20,8 @@ class Manager {
         const browser = bonjour.find({type:'barlow-cluster-worker'});
 
         browser.on('up', (service) => {
-            this.cr.register(service)
+            this.cr.register(service);
+            this.emit('ready');
         });
 
         browser.on('down', (service) => {
@@ -53,8 +56,18 @@ class Manager {
         return io;
     }
 
+    /**
+     * handle the heartbeat from the client, just emit the data for the web page to show.
+     * @param {*} data
+     */
     handleBeat(data){
         this.io.emit('beat', data);
+    }
+
+    //test stub for sending jobs
+    sendJob(data){
+        log.info('Registering Job');
+        this.cr.sendJob(data);
     }
 }
 

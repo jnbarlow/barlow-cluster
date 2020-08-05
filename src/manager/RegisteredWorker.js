@@ -1,5 +1,6 @@
 const log = require('loglevel-colors')('bc:RegisteredWorker');
 const socket = require('socket.io-client');
+const e = require('express');
 const EventEmitter = require('events').EventEmitter;
 
 /**
@@ -34,6 +35,16 @@ class RegisteredWorker extends EventEmitter {
             address: this.address
         }
         this.emit('beat', this.vitals);
+    }
+
+    //test wiring
+    sendJob(data){
+        log.info(`Sending job to worker ${this.id}`);
+        try {
+            this.io.emit('foo', data);
+        } catch (e) {
+            log.error('Error sending job', e);
+        }
     }
 }
 
