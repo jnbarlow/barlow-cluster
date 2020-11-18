@@ -5,13 +5,14 @@ const log = require('loglevel-colors')('bc:Interpreter');
  * the client and running code, returning the results.
  */
 class Interpreter {
+    jobs
     /**
      *
      * @param {*} client Socket io Client
      */
-    constructor(client){
-        this.client = client;
-
+    constructor(options){
+        const client = options.client;
+        this.jobs = options.jobs;
         client.on('foo', ()=>{
             this.handlefoo();
         });

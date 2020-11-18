@@ -4,7 +4,8 @@
   "description": "Node based compute cluster.",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "sample:manager": "node samples/manager/index.js",
+    "sample:client": "node samples/client/index.js"
   },
   "repository": {
     "type": "git",

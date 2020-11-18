@@ -41,8 +41,11 @@ While interesting mental excercises, both Topologies 2 and 3 have significant se
 # Examples And Documentation
 The built-in sample application is available here: [Samples](https://github.com/jnbarlow/barlow-cluster/tree/master/samples "Samples")
 
-These samples contain a basic Manager/Worker set up.  To run them, go into each folder and type
-`node index.js` (may need to npm link while the framework remains unpublished)
+These samples contain a basic Manager/Worker set up.  To run them, execute the following commands in separate terminals:
+- `npm run sample:worker`
+- `npm run sample:client`
+
+(may need to npm link while the framework remains unpublished)
 
 ## Documentation
 todo :)

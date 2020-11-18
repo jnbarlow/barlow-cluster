@@ -9,7 +9,9 @@ const Interpreter = require('./Interpreter');
  * off to the Interpreter to run commands.
  */
 class Operator{
+    jobs
     constructor(options){
+        this.jobs = options.jobs;
         log.info('Configuring socket server.');
         io.on('connection', (client) => {
             this.handleConnection(client);
@@ -35,7 +37,10 @@ class Operator{
         this.heartbeat(client);
 
         //set up callbacks
-        new Interpreter(client);
+        new Interpreter({
+            client,
+            jobs: this.jobs
+        });
     }
 
     /**
