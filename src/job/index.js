@@ -34,7 +34,14 @@ class Job {
      * @param {*} payload
      */
     async run(payload) {
-        return await this.callback(payload)
+        return await this.callback(payload);
+    }
+
+    /**
+     * returns the name of the plugin/job. Used for registration
+     */
+    getName(){
+        return this.name;
     }
 }
 
