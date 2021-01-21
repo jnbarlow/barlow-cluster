@@ -30,7 +30,7 @@
     "jquery": "^3.5.1",
     "loglevel-colors": "^1.0.1",
     "popper.js": "^1.16.1",
-    "socket.io": "^2.3.0",
+    "socket.io": "^2.4.0",
     "socket.io-client": "^2.3.0",
     "systeminformation": "^4.27.11",
     "uuid": "^8.1.0"
